@@ -1,9 +1,7 @@
 name: Deploy testing-role
 
 on:
-  push:
-    paths:
-      - 'testing-role/**'
+  workflow_dispatch:
 
 jobs:
   deploy:
