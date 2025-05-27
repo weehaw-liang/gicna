@@ -1,0 +1,29 @@
+name: Deploy testing-role
+
+on:
+  push:
+    paths:
+      - 'testing-role/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_USER: aap            # Change this to your server username
+      DEPLOY_HOST: 18.138.40.21     # Change this to your server hostname or IP
+      DEPLOY_PATH: /home/aap/aap/controller/data/     # Change this to your target directory on server
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+
+      - name: Deploy testing-role to server
+        run: |
+          scp -r ./testing-role $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+
