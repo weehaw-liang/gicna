@@ -1,0 +1,8 @@
+- name: Respond to file change
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Print file change detected
+      debug:
+        msg: "The watched file was modified!"
+
