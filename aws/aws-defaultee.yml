@@ -7,8 +7,8 @@
     secret_config:
       secret_name: "gic-aap-asm"
       region: "ap-southeast-1"
-      aws_access_key: "AKIAVRUVVJ4MZGSLULNA"
-      aws_secret_key: "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"
+      aws_access_key: "{{ aa_access_key }}"
+      aws_secret_key: "{{ aa_secret_key }}"
 
   tasks:
   - block:
