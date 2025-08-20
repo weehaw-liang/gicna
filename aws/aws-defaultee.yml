@@ -1,0 +1,47 @@
+---
+- hosts: all
+  gather_facts: false
+  collections:
+    - community.aws
+  vars:
+    secret_config:
+      secret_name: "gic-aap-asm"
+      region: "ap-southeast-1"
+      aws_access_key: "AKIAVRUVVJ4MZGSLULNA"
+      aws_secret_key: "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"
+
+  tasks:
+  - block:
+
+      - name: debug
+        debug:
+          msg: "{{ secret_config.secret_name }}"
+
+
+      - name: Lookup secretsmanager secret in a specific region using specified region and aws profile using nested feature
+        ansible.builtin.debug:
+          msg: >-
+            "{{ lookup('amazon.aws.aws_secret',
+            secret_config.secret_name,
+            region=secret_config.region,
+            access_key=secret_config.aws_access_key,
+            secret_key=secret_config.aws_secret_key)|from_json }}"
+
+
+      - name: community
+        community.aws.secretsmanager_secret:
+          name: "{{ secret_config.secret_name }}"
+          amazon.aws.secretsmanager_secret:
+          access_key: "{{ secret_config.aws_access_key }}"
+          secret_key: "{{ secret_config.aws_secret_key }}"
+          region: "{{ secret_config.region }}"
+          secret: "{{ lookup('community.general.random_string', length=16, special=false) }}"
+          overwrite: false
+        register: aa
+
+
+      - name: aa
+        debug:
+          msg: "{{ secret_config.secret_name }} and {{aa}}"
+
+
