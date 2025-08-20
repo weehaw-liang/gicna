@@ -31,7 +31,7 @@
       - name: community
         community.aws.secretsmanager_secret:
           name: "{{ secret_config.secret_name }}"
-          amazon.aws.secretsmanager_secret:
+            #amazon.aws.secretsmanager_secret:
           access_key: "{{ secret_config.aws_access_key }}"
           secret_key: "{{ secret_config.aws_secret_key }}"
           region: "{{ secret_config.region }}"
